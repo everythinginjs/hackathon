@@ -1,6 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
@@ -14,6 +15,12 @@ export default defineConfig(() => ({
     host: 'localhost',
   },
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@org/canvas': resolve(__dirname, '../libs/canvas/src/index.ts'),
+      '@org/ui-components': resolve(__dirname, '../ui-components/src/index.ts'),
+    },
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [],

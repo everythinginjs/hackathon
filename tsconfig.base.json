@@ -16,6 +16,11 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@org/source"]
+    "customConditions": ["@org/source"],
+    "baseUrl": ".",
+    "paths": {
+      "@org/canvas": ["libs/canvas/src/index.ts"],
+      "@org/ui-components": ["ui-components/src/index.ts"]
+    }
   }
 }
