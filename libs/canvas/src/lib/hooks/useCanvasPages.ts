@@ -18,13 +18,7 @@ export function useCanvasPages() {
       }))
     );
 
-  const {
-    pages,
-    activePageId,
-    getActivePage,
-    updatePageData,
-    setActivePage: setActivePageInStore,
-  } = usePagesStore(
+  const { pages, activePageId, getActivePage, updatePageData } = usePagesStore(
     useShallow((state) => ({
       pages: state.pages,
       activePageId: state.activePageId,
@@ -33,21 +27,6 @@ export function useCanvasPages() {
       setActivePage: state.setActivePage,
     }))
   );
-
-  // Save canvas data when switching pages
-  const switchToPage = (pageId: string) => {
-    // Save current page data AND thumbnail before switching
-    if (fabricCanvas && activePageId) {
-      const canvasData = saveCanvasData();
-      const thumbnail = generateThumbnail();
-      if (canvasData) {
-        updatePageData(activePageId, canvasData, thumbnail || undefined);
-      }
-    }
-
-    // Switch to new page
-    setActivePageInStore(pageId);
-  };
 
   // Subscribe to page changes and generate thumbnail for the previous page
   useEffect(() => {
@@ -141,6 +120,5 @@ export function useCanvasPages() {
   return {
     pages,
     activePageId,
-    switchToPage,
   };
 }
