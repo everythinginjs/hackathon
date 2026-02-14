@@ -11,7 +11,8 @@
     "start": "tsx src/main.ts start",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "download-files": "tsx src/main.ts download-files"
+    "download-files": "tsx src/main.ts download-files",
+    "test": "echo \"No tests yet for lumos-agent\" && exit 0"
   },
   "dependencies": {
     "@livekit/agents": "*",
