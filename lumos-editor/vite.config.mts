@@ -17,6 +17,7 @@ export default defineConfig(() => ({
   plugins: [react()],
   resolve: {
     alias: {
+      '@org/theme-mode': resolve(__dirname, '../libs/theme-mode/src/index.ts'),
       '@org/canvas': resolve(__dirname, '../libs/canvas/src/index.ts'),
       '@org/ui-components': resolve(__dirname, '../ui-components/src/index.ts'),
     },
