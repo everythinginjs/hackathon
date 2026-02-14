@@ -9,7 +9,8 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "lumos-client",
-        "command": "next dev"
+        "command": "next dev",
+        "port": 4201
       }
     },
     "build": {

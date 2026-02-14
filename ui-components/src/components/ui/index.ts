@@ -6,3 +6,5 @@ export * from './context-menu';
 export * from './typography';
 export * from './badge';
 export * from './card';
+export * from './label';
+export * from './field';
