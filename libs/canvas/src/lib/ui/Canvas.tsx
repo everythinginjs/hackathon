@@ -1,9 +1,7 @@
 import { Title } from '@org/ui-components';
-import * as fabric from 'fabric';
 import { useShallow } from 'zustand/react/shallow';
 import { useCanvas } from '../hooks/useCanvas';
 import { useCanvasPages } from '../hooks/useCanvasPages';
-import { useCanvasStore } from '../store/canvas-store';
 import { usePagesStore } from '../store/pages-store';
 
 export interface CanvasProps {
@@ -24,27 +22,9 @@ export function Canvas({
   // Enable automatic page loading/saving when switching pages
   useCanvasPages();
 
-  const fabricCanvas = useCanvasStore(
-    useShallow((state) => state.fabricCanvas)
-  );
-
   const activePageName = usePagesStore(
     useShallow((state) => state.getActivePage()?.name || 'Untitled Page')
   );
-
-  function addCircle() {
-    // This function is just for testing purposes to add a circle to the canvas
-    if (fabricCanvas) {
-      const circle = new fabric.Circle({
-        radius: 50,
-        fill: 'red',
-        left: 100,
-        top: 100,
-      });
-      fabricCanvas.add(circle);
-      fabricCanvas.requestRenderAll();
-    }
-  }
 
   return (
     <div
