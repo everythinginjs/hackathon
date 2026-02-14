@@ -12,6 +12,8 @@ export * from './lib/hooks/useCanvasKeyboardShortcuts';
 export * from './lib/ui/Canvas';
 export * from './lib/ui/CanvasPageSidebar';
 export * from './lib/components/CanvasPageList';
+export * from './lib/components/ElementsPanel';
 
 // Utils
 export * from './lib/utils/thumbnail';
+export * from './lib/utils/shapes';

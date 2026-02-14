@@ -1,4 +1,5 @@
 import { CanvasPageList } from '../components/CanvasPageList';
+import { ElementsPanel } from '../components/ElementsPanel';
 import { MiniSidebar } from '../../../../minisidebar/src';
 import { useState } from 'react';
 
@@ -16,9 +17,10 @@ export function CanvasPageSidebar({ className }: CanvasPageSidebarProps) {
       {/* Mini Icon Sidebar */}
       <MiniSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {/* Page Manager */}
+      {/* Content Panel */}
       <div className="w-64 overflow-y-auto">
-        <CanvasPageList />
+        {activeTab === 'pages' && <CanvasPageList />}
+        {activeTab === 'elements' && <ElementsPanel />}
       </div>
     </aside>
   );
