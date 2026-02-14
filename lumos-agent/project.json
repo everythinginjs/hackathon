@@ -1,0 +1,51 @@
+{
+  "name": "lumos-agent",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "lumos-agent/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "download-files": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm run download-files"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm start"
+      }
+    },
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm run dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm run build"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm run typecheck"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-agent",
+        "command": "npm test"
+      }
+    }
+  }
+}
