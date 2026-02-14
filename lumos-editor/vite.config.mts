@@ -5,7 +5,7 @@ import { resolve } from 'path';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
-  cacheDir: '../node_modules/.vite/lumos-ui',
+  cacheDir: '../node_modules/.vite/lumos-editor',
   server: {
     port: 4200,
     host: 'localhost',

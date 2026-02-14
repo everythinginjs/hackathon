@@ -8,7 +8,7 @@ An Nx workspace for building AI voice agent applications with React and NestJS.
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-ui/              # React frontend with Vite + Tailwind CSS v4
+├── lumos-editor/              # React frontend with Vite + Tailwind CSS v4
 ├── lumos-agent/           # LiveKit voice AI agent (Node.js)
 ├── lumos-api/             # NestJS API service
 ├── ui-components/         # Shared shadcn/ui component library with design tokens
@@ -27,7 +27,7 @@ An Nx workspace for building AI voice agent applications with React and NestJS.
 
 ## Applications
 
-### lumos-ui
+### lumos-editor
 React application for the frontend interface.
 
 **Tech Stack:**
@@ -39,9 +39,9 @@ React application for the frontend interface.
 
 **Commands:**
 ```bash
-npx nx serve lumos-ui          # Start dev server
-npx nx build lumos-ui          # Build for production
-npx nx test lumos-ui           # Run tests
+npx nx serve lumos-editor          # Start dev server
+npx nx build lumos-editor          # Build for production
+npx nx test lumos-editor           # Run tests
 ```
 
 **Port:** Development server runs on http://localhost:4200
@@ -126,7 +126,7 @@ Shared shadcn/ui component library with professional design tokens.
 **Usage:**
 ```tsx
 import { Button, Input } from '@org/ui-components';
-import '@org/ui-components/styles.css';  // Import in lumos-ui/src/main.tsx
+import '@org/ui-components/styles.css';  // Import in lumos-editor/src/main.tsx
 
 <Button variant="default">Click me</Button>
 <Button variant="destructive">Delete</Button>
@@ -236,7 +236,7 @@ npx nx sync:check
 
 ```bash
 # Terminal 1: Start UI
-npx nx serve lumos-ui
+npx nx serve lumos-editor
 
 # Terminal 2: Start Agent (after setup)
 npx nx serve lumos-agent
@@ -252,7 +252,7 @@ npx nx serve lumos-api
 npx nx run-many -t test
 
 # Specific project
-npx nx test lumos-ui
+npx nx test lumos-editor
 npx nx test lumos-agent
 npx nx test lumos-api
 ```
@@ -264,7 +264,7 @@ npx nx test lumos-api
 npx nx run-many -t build
 
 # Build specific
-npx nx build lumos-ui
+npx nx build lumos-editor
 npx nx build lumos-agent
 npx nx build lumos-api
 ```
@@ -308,18 +308,18 @@ It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin
 - Change `styles.css` from `@tailwind base/components/utilities` to `@import "tailwindcss"`
 
 **Shadcn components not styled:**
-- Ensure `lumos-ui/src/styles.css` imports ui-components styles:
+- Ensure `lumos-editor/src/styles.css` imports ui-components styles:
 ```css
 @import "tailwindcss";
 @import "../../ui-components/src/styles.css";
 @source "../../ui-components/src";
 ```
 - Verify `@import` statements come before `@source` directive
-- Check `lumos-ui/src/main.tsx` imports styles: `import './styles.css'`
+- Check `lumos-editor/src/main.tsx` imports styles: `import './styles.css'`
 
 **Classes not applying:**
 - Tailwind needs to scan ui-components for classes
-- Use `@source "../../ui-components/src"` in lumos-ui styles
+- Use `@source "../../ui-components/src"` in lumos-editor styles
 - Ensure PostCSS processes CSS imports correctly
 
 ### LiveKit Agent Issues

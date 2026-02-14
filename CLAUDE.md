@@ -20,7 +20,7 @@ This file provides specific guidance to Claude Code (claude.ai/code) when workin
 ## Project: Lumos AI Voice Agent Platform
 
 A hackathon project building a voice AI agent platform with:
-- **lumos-ui**: React frontend (Vite + Tailwind CSS v4)
+- **lumos-editor**: React frontend (Vite + Tailwind CSS v4)
 - **lumos-agent**: LiveKit voice AI agent
 - **lumos-api**: NestJS API backend
 - **ui-components**: Shared component library
@@ -29,7 +29,7 @@ A hackathon project building a voice AI agent platform with:
 
 ### Start Development Servers
 ```bash
-npx nx serve lumos-ui          # http://localhost:4200
+npx nx serve lumos-editor          # http://localhost:4200
 npx nx serve lumos-agent       # Voice agent (needs .env.local)
 npx nx serve lumos-api         # http://localhost:3000
 ```
@@ -44,13 +44,13 @@ npx nx run-many -t test
 
 ## Critical Implementation Details
 
-### 1. Tailwind CSS v4 (lumos-ui)
+### 1. Tailwind CSS v4 (lumos-editor)
 
 **IMPORTANT:** Tailwind v4 has breaking changes:
 
 ✅ **Correct Implementation:**
 ```javascript
-// lumos-ui/postcss.config.js
+// lumos-editor/postcss.config.js
 module.exports = {
   plugins: {
     '@tailwindcss/postcss': {},  // NEW plugin
@@ -60,7 +60,7 @@ module.exports = {
 ```
 
 ```css
-/* lumos-ui/src/styles.css */
+/* lumos-editor/src/styles.css */
 @import "tailwindcss";  /* NEW syntax */
 ```
 
@@ -181,7 +181,7 @@ Unsupported URL Type "workspace:": workspace:*
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-ui/
+├── lumos-editor/
 │   ├── src/
 │   │   ├── main.tsx
 │   │   ├── styles.css          # @import "tailwindcss";
@@ -229,14 +229,14 @@ Unsupported URL Type "workspace:": workspace:*
 
 3. **Start services:**
    ```bash
-   npx nx serve lumos-ui      # Terminal 1
+   npx nx serve lumos-editor      # Terminal 1
    npx nx serve lumos-agent   # Terminal 2 (after setup)
    npx nx serve lumos-api     # Terminal 3
    ```
 
 ### Making Changes
 
-- **UI changes:** Edit files in `lumos-ui/src/`, hot reload enabled
+- **UI changes:** Edit files in `lumos-editor/src/`, hot reload enabled
 - **Agent changes:** Edit `lumos-agent/src/`, tsx watch enabled
 - **API changes:** Edit `lumos-api/src/`, hot reload enabled
 
@@ -244,7 +244,7 @@ Unsupported URL Type "workspace:": workspace:*
 
 ```bash
 # Single project
-npx nx test lumos-ui
+npx nx test lumos-editor
 
 # All projects
 npx nx run-many -t test
@@ -254,7 +254,7 @@ npx nx run-many -t test
 
 ```bash
 # Single project
-npx nx build lumos-ui
+npx nx build lumos-editor
 
 # All projects
 npx nx run-many -t build
@@ -264,7 +264,7 @@ npx nx run-many -t build
 
 | Project | Framework | Bundler | Language | Port |
 |---------|-----------|---------|----------|------|
-| lumos-ui | React 19 | Vite | TypeScript | 4200 |
+| lumos-editor | React 19 | Vite | TypeScript | 4200 |
 | lumos-agent | Node.js | tsx | TypeScript | - |
 | lumos-api | NestJS | Webpack | TypeScript | 3000 |
 | ui-components | React | Vite | TypeScript | - |

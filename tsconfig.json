@@ -4,12 +4,6 @@
   "files": [],
   "references": [
     {
-      "path": "./lumos-ui"
-    },
-    {
-      "path": "./lumos-agent"
-    },
-    {
       "path": "./lumos-api"
     },
     {
@@ -22,10 +16,10 @@
       "path": "./libs/minisidebar"
     },
     {
-      "path": "./lumos-client-e2e"
+      "path": "./lumos-client"
     },
     {
-      "path": "./lumos-client"
+      "path": "./lumos-editor"
     }
   ]
 }

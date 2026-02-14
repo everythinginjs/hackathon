@@ -60,7 +60,7 @@
   },
   "workspaces": [
     "packages/*",
-    "lumos-ui",
+    "lumos-editor",
     "lumos-agent",
     "lumos-api",
     "ui-components",

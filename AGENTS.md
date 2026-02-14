@@ -20,7 +20,7 @@ This file provides guidance to AI coding assistants (Gemini, Claude Code, Cursor
 ## Project Overview
 
 This is a hackathon project called **Lumos** - an AI voice agent platform built with:
-- **lumos-ui**: React frontend with Vite + Tailwind CSS v4
+- **lumos-editor**: React frontend with Vite + Tailwind CSS v4
 - **lumos-agent**: LiveKit voice AI agent (Node.js with TypeScript)
 - **lumos-api**: NestJS API backend
 - **ui-components**: shadcn/ui component library with professional design tokens
@@ -30,7 +30,7 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-ui/              # React app (Vite + Tailwind CSS v4)
+├── lumos-editor/              # React app (Vite + Tailwind CSS v4)
 ├── lumos-agent/           # LiveKit voice AI agent
 ├── lumos-api/             # NestJS API
 ├── ui-components/         # shadcn/ui components + design tokens
@@ -48,7 +48,7 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 
 ## Key Technologies
 
-### Frontend (lumos-ui)
+### Frontend (lumos-editor)
 - React 19 with TypeScript
 - Vite bundler
 - **Tailwind CSS v4** (uses `@tailwindcss/postcss` plugin)
@@ -73,7 +73,7 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 
 ### Start Services
 ```bash
-npx nx serve lumos-ui          # Frontend (port 4200)
+npx nx serve lumos-editor          # Frontend (port 4200)
 npx nx serve lumos-agent       # Voice agent
 npx nx serve lumos-api         # API (port 3000)
 ```
@@ -92,7 +92,7 @@ npx nx run-many -t test        # Test all
 - Uses **NEW PostCSS plugin**: `@tailwindcss/postcss` (NOT `tailwindcss`)
 - CSS imports: `@import "tailwindcss";` (NOT `@tailwind` directives)
 - No `tailwind.config.js` file needed (CSS-based configuration)
-- PostCSS config: `lumos-ui/postcss.config.js` must use `'@tailwindcss/postcss'`
+- PostCSS config: `lumos-editor/postcss.config.js` must use `'@tailwindcss/postcss'`
 
 ### LiveKit Agent
 - **Correct imports**: `import { voice } from '@livekit/agents';`
@@ -118,8 +118,8 @@ npx nx run-many -t test        # Test all
 - **Styling**: Tailwind CSS v4 with custom design system
 - **Import paths**: Components use **relative imports** (`../../lib/utils`), not aliases
 - **Setup**: Requires `.npmrc` with `legacy-peer-deps=true` for installation
-- **CSS import**: lumos-ui must import styles: `@import "../../ui-components/src/styles.css"`
-- **Content scanning**: lumos-ui uses `@source "../../ui-components/src"` for Tailwind
+- **CSS import**: lumos-editor must import styles: `@import "../../ui-components/src/styles.css"`
+- **Content scanning**: lumos-editor uses `@source "../../ui-components/src"` for Tailwind
 
 **Available Components:**
 - Button (default, destructive, outline, secondary, ghost, link variants)
@@ -140,7 +140,7 @@ npx nx run-many -t test        # Test all
 ```
 **Solution:**
 1. Install: `npm install -D @tailwindcss/postcss`
-2. Update `lumos-ui/postcss.config.js`:
+2. Update `lumos-editor/postcss.config.js`:
    ```js
    module.exports = {
      plugins: {
@@ -149,7 +149,7 @@ npx nx run-many -t test        # Test all
      },
    }
    ```
-3. Update `lumos-ui/src/styles.css`:
+3. Update `lumos-editor/src/styles.css`:
    ```css
    @import "tailwindcss";  /* NOT @tailwind directives */
    ```
@@ -202,8 +202,8 @@ Replace `workspace:*` with `*` in package.json dependencies (npm workspaces use 
 - Tailwind classes don't apply
 
 **Solution:**
-1. Import styles in `lumos-ui/src/main.tsx`: `import './styles.css'`
-2. Update `lumos-ui/src/styles.css`:
+1. Import styles in `lumos-editor/src/main.tsx`: `import './styles.css'`
+2. Update `lumos-editor/src/styles.css`:
    ```css
    @import "tailwindcss";
    @import "../../ui-components/src/styles.css";
@@ -234,7 +234,7 @@ sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' *.tsx
 
 ## Development Workflow
 
-1. **Start UI**: `npx nx serve lumos-ui`
+1. **Start UI**: `npx nx serve lumos-editor`
 2. **Setup Agent**:
    - Create `lumos-agent/.env.local` with LiveKit credentials
    - Run `cd lumos-agent && npm run download-files`
@@ -248,7 +248,7 @@ sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' *.tsx
 npx nx run-many -t test
 
 # Specific project
-npx nx test lumos-ui
+npx nx test lumos-editor
 npx nx test lumos-agent
 npx nx test lumos-api
 ```

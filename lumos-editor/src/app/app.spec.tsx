@@ -20,7 +20,7 @@ describe('App', () => {
       </BrowserRouter>
     );
     expect(
-      getAllByText(new RegExp('Welcome @org/lumos-ui', 'gi')).length > 0
+      getAllByText(new RegExp('Welcome @org/lumos-editor', 'gi')).length > 0
     ).toBeTruthy();
   });
 });
