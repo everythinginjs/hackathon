@@ -20,22 +20,26 @@ This file provides guidance to AI coding assistants (Gemini, Claude Code, Cursor
 ## Project Overview
 
 This is a hackathon project called **Lumos** - an AI voice agent platform built with:
-- **lumos-editor**: React frontend with Vite + Tailwind CSS v4
+- **lumos-client**: Next.js marketing/landing site (SEO-optimized)
+- **lumos-editor**: React design editor with Vite + Tailwind CSS v4
 - **lumos-agent**: LiveKit voice AI agent (Node.js with TypeScript)
 - **lumos-api**: NestJS API backend
 - **ui-components**: shadcn/ui component library with professional design tokens
 - **libs/canvas**: Fabric.js canvas integration with Zustand state management
+- **libs/minisidebar**: Reusable sidebar component
 
 ## Project Structure
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-editor/              # React app (Vite + Tailwind CSS v4)
+├── lumos-client/          # Next.js marketing site (App Router + Tailwind v4)
+├── lumos-editor/          # React design editor (Vite + Tailwind v4)
 ├── lumos-agent/           # LiveKit voice AI agent
 ├── lumos-api/             # NestJS API
 ├── ui-components/         # shadcn/ui components + design tokens
 ├── libs/
-│   └── canvas/            # Fabric.js canvas + Zustand store
+│   ├── canvas/            # Fabric.js canvas + Zustand store
+│   └── minisidebar/       # Sidebar component
 ├── docs/                  # Documentation
 │   ├── PROJECT.md         # Technical documentation
 │   ├── HACKATHON.md       # Hackathon rules
@@ -48,7 +52,15 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 
 ## Key Technologies
 
-### Frontend (lumos-editor)
+### Marketing Site (lumos-client)
+- Next.js 16 with App Router
+- TypeScript
+- **Tailwind CSS v4** (uses `@tailwindcss/postcss` plugin)
+- Server-side rendering for SEO
+- Comprehensive metadata (Open Graph, Twitter Cards)
+- Playwright E2E testing
+
+### Design Editor (lumos-editor)
 - React 19 with TypeScript
 - Vite bundler
 - **Tailwind CSS v4** (uses `@tailwindcss/postcss` plugin)
