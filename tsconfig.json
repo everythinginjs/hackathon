@@ -20,6 +20,12 @@
     },
     {
       "path": "./libs/minisidebar"
+    },
+    {
+      "path": "./lumos-client-e2e"
+    },
+    {
+      "path": "./lumos-client"
     }
   ]
 }
