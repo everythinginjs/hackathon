@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "types": [
+      "node",
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
       "vite/client"
@@ -11,7 +12,6 @@
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "skipLibCheck": true,
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
   "exclude": [
@@ -34,9 +34,6 @@
   "references": [
     {
       "path": "../../ui-components/tsconfig.lib.json"
-    },
-    {
-      "path": "../minisidebar/tsconfig.lib.json"
     }
   ]
 }

@@ -2,5 +2,7 @@
 @import "../../ui-components/src/styles.css";
 
 @source "../../ui-components/src";
+@source "../../libs/canvas/src";
+@source "../../libs/minisidebar/src";
 
 /* You can add global styles to this file, and also import other style files */

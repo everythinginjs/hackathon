@@ -21,6 +21,11 @@ interface CanvasState {
   addObject: (object: fabric.Object) => void;
   removeObject: (object: fabric.Object) => void;
   clearCanvas: () => void;
+
+  // Canvas data operations
+  saveCanvasData: () => string | null;
+  loadCanvasData: (canvasData: string) => void;
+  generateThumbnail: (width?: number, height?: number) => string | null;
 }
 
 export const useCanvasStore = create<CanvasState>()(
@@ -72,6 +77,55 @@ export const useCanvasStore = create<CanvasState>()(
           canvas.requestRenderAll();
         }
         set({ selectedObjects: [] });
+      },
+
+      // Canvas data operations
+      saveCanvasData: () => {
+        const canvas = get().fabricCanvas;
+        if (!canvas) return null;
+        return JSON.stringify(canvas.toJSON());
+      },
+
+      loadCanvasData: (canvasData) => {
+        const canvas = get().fabricCanvas;
+        if (!canvas) return;
+
+        try {
+          const data = JSON.parse(canvasData);
+          canvas.loadFromJSON(data, () => {
+            canvas.requestRenderAll();
+          });
+        } catch (error) {
+          console.error('Failed to load canvas data:', error);
+        }
+      },
+
+      generateThumbnail: (width = 220, height = 300) => {
+        const canvas = get().fabricCanvas;
+        if (!canvas) return null;
+
+        try {
+          // Get the canvas dimensions
+          const canvasWidth = canvas.getWidth();
+          const canvasHeight = canvas.getHeight();
+
+          // Calculate scaling to fit within thumbnail dimensions while maintaining aspect ratio
+          const scaleX = width / canvasWidth;
+          const scaleY = height / canvasHeight;
+          const scale = Math.min(scaleX, scaleY);
+
+          // Generate thumbnail with scaling
+          const dataURL = canvas.toDataURL({
+            format: 'png',
+            quality: 0.8,
+            multiplier: scale,
+          });
+
+          return dataURL;
+        } catch (error) {
+          console.error('Failed to generate thumbnail:', error);
+          return null;
+        }
       },
     }),
     { name: 'CanvasStore' }

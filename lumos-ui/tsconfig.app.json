@@ -33,6 +33,12 @@
   "references": [
     {
       "path": "../ui-components/tsconfig.lib.json"
+    },
+    {
+      "path": "../libs/canvas/tsconfig.lib.json"
+    },
+    {
+      "path": "../libs/minisidebar/tsconfig.lib.json"
     }
   ]
 }
