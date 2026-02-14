@@ -1,8 +1,10 @@
+import { Title } from '@org/ui-components';
+import * as fabric from 'fabric';
+import { useShallow } from 'zustand/react/shallow';
 import { useCanvas } from '../hooks/useCanvas';
 import { useCanvasPages } from '../hooks/useCanvasPages';
-import * as fabric from 'fabric';
 import { useCanvasStore } from '../store/canvas-store';
-import { Button } from '@org/ui-components';
+import { usePagesStore } from '../store/pages-store';
 
 export interface CanvasProps {
   width?: number;
@@ -22,7 +24,13 @@ export function Canvas({
   // Enable automatic page loading/saving when switching pages
   useCanvasPages();
 
-  const { fabricCanvas } = useCanvasStore();
+  const fabricCanvas = useCanvasStore(
+    useShallow((state) => state.fabricCanvas)
+  );
+
+  const activePageName = usePagesStore(
+    useShallow((state) => state.getActivePage()?.name || 'Untitled Page')
+  );
 
   function addCircle() {
     // This function is just for testing purposes to add a circle to the canvas
@@ -40,13 +48,16 @@ export function Canvas({
 
   return (
     <div
-      className={`flex flex-col justify-center items-center w-full h-full overflow-hidden ${
+      style={{
+        width,
+      }}
+      className={`flex flex-col justify-center items-center w-full h-full ${
         className || ''
       }`}
     >
-      <Button onClick={addCircle} className="mb-4">
-        Add Circle
-      </Button>
+      <Title className="text-muted-foreground self-start mb-1">
+        {activePageName}
+      </Title>
       <canvas ref={canvasRef} className="border border-gray-300 shadow-lg" />
     </div>
   );

@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import OrgMinisidebar from './minisidebar';
+import { MiniSidebar } from './minisidebar';
 
-describe('OrgMinisidebar', () => {
+describe('MiniSidebar', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<OrgMinisidebar />);
+    const { baseElement } = render(<MiniSidebar />);
     expect(baseElement).toBeTruthy();
   });
 });

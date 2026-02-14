@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as fabric from 'fabric';
+import { useShallow } from 'zustand/react/shallow';
 import { useCanvasStore } from '../store/canvas-store';
 
 interface UseCanvasOptions {
@@ -12,8 +13,13 @@ export function useCanvas(options: UseCanvasOptions = {}) {
   const { width = 800, height = 600, backgroundColor = '#ffffff' } = options;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { fabricCanvas, setFabricCanvas, setSelectedObjects } =
-    useCanvasStore();
+  const { fabricCanvas, setFabricCanvas, setSelectedObjects } = useCanvasStore(
+    useShallow((state) => ({
+      fabricCanvas: state.fabricCanvas,
+      setFabricCanvas: state.setFabricCanvas,
+      setSelectedObjects: state.setSelectedObjects,
+    }))
+  );
 
   useEffect(() => {
     if (!canvasRef.current) return;

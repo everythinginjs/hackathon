@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { useCanvasStore } from '../store/canvas-store';
 import { usePagesStore } from '../store/pages-store';
 
@@ -8,14 +9,30 @@ import { usePagesStore } from '../store/pages-store';
  */
 export function useCanvasPages() {
   const { fabricCanvas, saveCanvasData, loadCanvasData, generateThumbnail } =
-    useCanvasStore();
+    useCanvasStore(
+      useShallow((state) => ({
+        fabricCanvas: state.fabricCanvas,
+        saveCanvasData: state.saveCanvasData,
+        loadCanvasData: state.loadCanvasData,
+        generateThumbnail: state.generateThumbnail,
+      }))
+    );
+
   const {
     pages,
     activePageId,
     getActivePage,
     updatePageData,
     setActivePage: setActivePageInStore,
-  } = usePagesStore();
+  } = usePagesStore(
+    useShallow((state) => ({
+      pages: state.pages,
+      activePageId: state.activePageId,
+      getActivePage: state.getActivePage,
+      updatePageData: state.updatePageData,
+      setActivePage: state.setActivePage,
+    }))
+  );
 
   // Save canvas data when switching pages
   const switchToPage = (pageId: string) => {
@@ -75,19 +92,44 @@ export function useCanvasPages() {
     }
   }, [activePageId, fabricCanvas, getActivePage, loadCanvasData]);
 
-  // Auto-save current page data AND thumbnail periodically (every 2 seconds)
+  // Auto-save on canvas modifications using Fabric.js events with debouncing
   useEffect(() => {
     if (!fabricCanvas || !activePageId) return;
 
-    const interval = setInterval(() => {
-      const canvasData = saveCanvasData();
-      const thumbnail = generateThumbnail();
-      if (canvasData) {
-        updatePageData(activePageId, canvasData, thumbnail || undefined);
-      }
-    }, 2000);
+    let debounceTimeout: NodeJS.Timeout | null = null;
 
-    return () => clearInterval(interval);
+    const saveWithDebounce = () => {
+      // Clear existing timeout
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+
+      // Set new timeout to save after 500ms of no activity
+      debounceTimeout = setTimeout(() => {
+        const canvasData = saveCanvasData();
+        const thumbnail = generateThumbnail();
+        if (canvasData) {
+          updatePageData(activePageId, canvasData, thumbnail || undefined);
+        }
+      }, 500);
+    };
+
+    // Listen to canvas modification events
+    fabricCanvas.on('object:modified', saveWithDebounce);
+    fabricCanvas.on('object:added', saveWithDebounce);
+    fabricCanvas.on('object:removed', saveWithDebounce);
+
+    return () => {
+      // Cleanup event listeners
+      fabricCanvas.off('object:modified', saveWithDebounce);
+      fabricCanvas.off('object:added', saveWithDebounce);
+      fabricCanvas.off('object:removed', saveWithDebounce);
+
+      // Clear pending timeout
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+    };
   }, [
     fabricCanvas,
     activePageId,

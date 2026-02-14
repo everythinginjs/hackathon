@@ -1,6 +1,7 @@
 // Store
 export * from './lib/store/canvas-store';
 export * from './lib/store/pages-store';
+export * from './lib/store/project-store';
 
 // Hooks
 export * from './lib/hooks/useCanvas';
@@ -11,3 +12,6 @@ export * from './lib/hooks/useCanvasKeyboardShortcuts';
 export * from './lib/ui/Canvas';
 export * from './lib/ui/CanvasPageSidebar';
 export * from './lib/components/CanvasPageList';
+
+// Utils
+export * from './lib/utils/thumbnail';

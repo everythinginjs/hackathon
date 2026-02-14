@@ -9,12 +9,12 @@ export function App() {
   useCanvasKeyboardShortcuts();
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background">
+    <div className="flex h-screen w-screen bg-background">
       {/* Page management sidebar */}
       <CanvasPageSidebar />
 
       {/* Canvas area */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 grid place-items-center">
         <Canvas />
       </main>
     </div>

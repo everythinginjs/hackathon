@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import { usePagesStore } from '../store/pages-store';
 
 /**
@@ -10,7 +11,16 @@ import { usePagesStore } from '../store/pages-store';
  * - Cmd/Ctrl + Backspace: Delete current page
  */
 export function useCanvasKeyboardShortcuts() {
-  const { activePageId, addPage, duplicatePage, deletePage, canDelete } = usePagesStore();
+  const { activePageId, addPage, duplicatePage, deletePage, canDelete } =
+    usePagesStore(
+      useShallow((state) => ({
+        activePageId: state.activePageId,
+        addPage: state.addPage,
+        duplicatePage: state.duplicatePage,
+        deletePage: state.deletePage,
+        canDelete: state.canDelete,
+      }))
+    );
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

@@ -1,6 +1,9 @@
 import { Button } from '@org/ui-components';
 import { ChevronDown, ChevronUp, Copy, Plus, Trash2 } from 'lucide-react';
+import { useShallow } from 'zustand/react/shallow';
 import { usePagesStore } from '../store/pages-store';
+import { useProjectStore } from '../store/project-store';
+import { calculateThumbnailDimensions } from '../utils/thumbnail';
 
 export function CanvasPageList() {
   const {
@@ -15,7 +18,34 @@ export function CanvasPageList() {
     canMoveUp,
     canMoveDown,
     canDelete,
-  } = usePagesStore();
+  } = usePagesStore(
+    useShallow((state) => ({
+      pages: state.pages,
+      activePageId: state.activePageId,
+      addPage: state.addPage,
+      deletePage: state.deletePage,
+      duplicatePage: state.duplicatePage,
+      movePageUp: state.movePageUp,
+      movePageDown: state.movePageDown,
+      setActivePage: state.setActivePage,
+      canMoveUp: state.canMoveUp,
+      canMoveDown: state.canMoveDown,
+      canDelete: state.canDelete,
+    }))
+  );
+
+  const { canvasHeight, canvasWidth } = useProjectStore(
+    useShallow((state) => ({
+      canvasHeight: state.canvasHeight,
+      canvasWidth: state.canvasWidth,
+    }))
+  );
+
+  // Calculate thumbnail dimensions using shared utility
+  const { thumbnailWidth, thumbnailHeight } = calculateThumbnailDimensions(
+    canvasWidth,
+    canvasHeight
+  );
 
   return (
     <div className="flex flex-col h-full bg-background">
@@ -108,7 +138,7 @@ export function CanvasPageList() {
                 <div
                   onClick={() => setActivePage(page.id)}
                   className={`
-                    relative aspect-[3/4] rounded-lg border-2 cursor-pointer
+                    relative rounded-lg border-2 cursor-pointer
                     transition-all duration-200
                     ${
                       isActive
@@ -118,12 +148,17 @@ export function CanvasPageList() {
                   `}
                 >
                   {/* Thumbnail or placeholder */}
-                  <div className="w-full h-full bg-muted rounded-md overflow-hidden flex items-center justify-center">
+                  <div
+                    style={{ width: thumbnailWidth, height: thumbnailHeight }}
+                    className="w-full h-full bg-muted rounded-md overflow-hidden flex items-center justify-center"
+                  >
                     {page.thumbnail ? (
                       <img
                         src={page.thumbnail}
                         alt={page.name}
-                        className="w-full h-full object-cover"
+                        width={thumbnailWidth}
+                        height={thumbnailHeight}
+                        className="w-full h-full object-contain"
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center text-muted-foreground">

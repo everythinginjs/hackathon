@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import * as fabric from 'fabric';
+import { calculateThumbnailDimensions } from '../utils/thumbnail';
 
 interface CanvasState {
   // Canvas instance
@@ -100,7 +101,7 @@ export const useCanvasStore = create<CanvasState>()(
         }
       },
 
-      generateThumbnail: (width = 220, height = 300) => {
+      generateThumbnail: (maxWidth = 220, maxHeight = 300) => {
         const canvas = get().fabricCanvas;
         if (!canvas) return null;
 
@@ -109,15 +110,19 @@ export const useCanvasStore = create<CanvasState>()(
           const canvasWidth = canvas.getWidth();
           const canvasHeight = canvas.getHeight();
 
-          // Calculate scaling to fit within thumbnail dimensions while maintaining aspect ratio
-          const scaleX = width / canvasWidth;
-          const scaleY = height / canvasHeight;
-          const scale = Math.min(scaleX, scaleY);
+          // Calculate thumbnail dimensions using shared utility
+          const { scale } = calculateThumbnailDimensions(
+            canvasWidth,
+            canvasHeight,
+            maxWidth,
+            maxHeight
+          );
 
           // Generate thumbnail with scaling
           const dataURL = canvas.toDataURL({
             format: 'png',
             quality: 0.8,
+            enableRetinaScaling: true,
             multiplier: scale,
           });
 
