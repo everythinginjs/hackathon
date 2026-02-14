@@ -1,0 +1,7 @@
+{
+  "name": "@org/theme-mode",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/theme-mode/src",
+  "projectType": "library",
+  "tags": []
+}

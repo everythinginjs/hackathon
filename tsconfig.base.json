@@ -21,7 +21,8 @@
     "paths": {
       "@org/minisidebar": ["libs/minisidebar/src/index.ts"],
       "@org/canvas": ["libs/canvas/src/index.ts"],
-      "@org/ui-components": ["ui-components/src/index.ts"]
+      "@org/ui-components": ["ui-components/src/index.ts"],
+      "@org/theme-mode": ["libs/theme-mode/src/index.ts"]
     }
   }
 }

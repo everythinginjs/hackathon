@@ -20,6 +20,9 @@
     },
     {
       "path": "./lumos-editor"
+    },
+    {
+      "path": "./libs/theme-mode"
     }
   ]
 }

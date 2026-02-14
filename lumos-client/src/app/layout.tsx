@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './global.css';
+import { ThemeProvider } from '@org/theme-mode';
 
 export const metadata: Metadata = {
   title: {
@@ -64,9 +65,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

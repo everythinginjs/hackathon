@@ -13,16 +13,22 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
+    "skipLibCheck": true,
+    "strict": false,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@org/theme-mode": ["../libs/theme-mode/src/index.ts"],
+      "@org/ui-components": ["../ui-components/src/index.ts"],
+      "@org/canvas": ["../libs/canvas/src/index.ts"],
+      "@org/minisidebar": ["../libs/minisidebar/src/index.ts"]
     },
+    "baseUrl": ".",
     "outDir": "dist",
-    "rootDir": "src",
     "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
@@ -43,5 +49,13 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     ".next"
+  ],
+  "references": [
+    {
+      "path": "../libs/theme-mode"
+    },
+    {
+      "path": "../ui-components"
+    }
   ]
 }
