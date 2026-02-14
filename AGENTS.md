@@ -85,9 +85,10 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 
 ### Start Services
 ```bash
-npx nx serve lumos-editor          # Frontend (port 4200)
+npx nx serve lumos-client      # Marketing site (port 3000)
+npx nx serve lumos-editor      # Design editor (port 4200)
 npx nx serve lumos-agent       # Voice agent
-npx nx serve lumos-api         # API (port 3000)
+npx nx serve lumos-api         # API (port 3000, conflicts with lumos-client)
 ```
 
 ### Build & Test
@@ -104,7 +105,8 @@ npx nx run-many -t test        # Test all
 - Uses **NEW PostCSS plugin**: `@tailwindcss/postcss` (NOT `tailwindcss`)
 - CSS imports: `@import "tailwindcss";` (NOT `@tailwind` directives)
 - No `tailwind.config.js` file needed (CSS-based configuration)
-- PostCSS config: `lumos-editor/postcss.config.js` must use `'@tailwindcss/postcss'`
+- PostCSS configs: Both `lumos-client/postcss.config.js` and `lumos-editor/postcss.config.js` must use `'@tailwindcss/postcss'`
+- Both apps import ui-components design tokens via `@import "../../ui-components/src/styles.css"`
 
 ### LiveKit Agent
 - **Correct imports**: `import { voice } from '@livekit/agents';`
@@ -130,8 +132,8 @@ npx nx run-many -t test        # Test all
 - **Styling**: Tailwind CSS v4 with custom design system
 - **Import paths**: Components use **relative imports** (`../../lib/utils`), not aliases
 - **Setup**: Requires `.npmrc` with `legacy-peer-deps=true` for installation
-- **CSS import**: lumos-editor must import styles: `@import "../../ui-components/src/styles.css"`
-- **Content scanning**: lumos-editor uses `@source "../../ui-components/src"` for Tailwind
+- **CSS import**: Both lumos-client and lumos-editor must import styles: `@import "../../ui-components/src/styles.css"`
+- **Content scanning**: Both apps use `@source "../../ui-components/src"` for Tailwind to scan component classes
 
 **Available Components:**
 - Button (default, destructive, outline, secondary, ghost, link variants)
@@ -152,7 +154,7 @@ npx nx run-many -t test        # Test all
 ```
 **Solution:**
 1. Install: `npm install -D @tailwindcss/postcss`
-2. Update `lumos-editor/postcss.config.js`:
+2. Update `postcss.config.js` (both lumos-client and lumos-editor):
    ```js
    module.exports = {
      plugins: {
@@ -161,9 +163,11 @@ npx nx run-many -t test        # Test all
      },
    }
    ```
-3. Update `lumos-editor/src/styles.css`:
+3. Update styles CSS file (global.css for lumos-client, styles.css for lumos-editor):
    ```css
    @import "tailwindcss";  /* NOT @tailwind directives */
+   @import "../../ui-components/src/styles.css";
+   @source "../../ui-components/src";
    ```
 
 ### Issue: LiveKit Import Error
@@ -214,8 +218,10 @@ Replace `workspace:*` with `*` in package.json dependencies (npm workspaces use 
 - Tailwind classes don't apply
 
 **Solution:**
-1. Import styles in `lumos-editor/src/main.tsx`: `import './styles.css'`
-2. Update `lumos-editor/src/styles.css`:
+1. Import styles in entry file:
+   - `lumos-editor/src/main.tsx`: `import './styles.css'`
+   - `lumos-client/src/app/layout.tsx`: imports `./global.css` automatically
+2. Update CSS files:
    ```css
    @import "tailwindcss";
    @import "../../ui-components/src/styles.css";
@@ -246,12 +252,13 @@ sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' *.tsx
 
 ## Development Workflow
 
-1. **Start UI**: `npx nx serve lumos-editor`
-2. **Setup Agent**:
+1. **Start Marketing Site**: `npx nx serve lumos-client` (Next.js App Router with SSR - port 3000)
+2. **Start Design Editor**: `npx nx serve lumos-editor` (React + Canvas - port 4200)
+3. **Setup Agent**:
    - Create `lumos-agent/.env.local` with LiveKit credentials
    - Run `cd lumos-agent && npm run download-files`
    - Start: `npx nx serve lumos-agent`
-3. **Start API**: `npx nx serve lumos-api`
+4. **Start API**: `npx nx serve lumos-api` (port 3000 - conflicts with lumos-client)
 
 ## Testing
 
@@ -260,6 +267,7 @@ sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' *.tsx
 npx nx run-many -t test
 
 # Specific project
+npx nx test lumos-client
 npx nx test lumos-editor
 npx nx test lumos-agent
 npx nx test lumos-api

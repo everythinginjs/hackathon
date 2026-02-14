@@ -8,12 +8,14 @@ An Nx workspace for building AI voice agent applications with React and NestJS.
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-editor/              # React frontend with Vite + Tailwind CSS v4
+├── lumos-client/          # Next.js marketing site (App Router + Tailwind CSS v4)
+├── lumos-editor/          # React design editor (Vite + Tailwind CSS v4)
 ├── lumos-agent/           # LiveKit voice AI agent (Node.js)
 ├── lumos-api/             # NestJS API service
 ├── ui-components/         # Shared shadcn/ui component library with design tokens
 ├── libs/
-│   └── canvas/            # Fabric.js canvas integration with Zustand store
+│   ├── canvas/            # Fabric.js canvas integration with Zustand store
+│   └── minisidebar/       # Reusable sidebar component
 ├── docs/                  # Documentation
 │   ├── PROJECT.md         # This file
 │   ├── HACKATHON.md       # Hackathon details and rules
@@ -27,8 +29,35 @@ An Nx workspace for building AI voice agent applications with React and NestJS.
 
 ## Applications
 
+### lumos-client
+Next.js application for marketing and landing pages with SEO optimization.
+
+**Tech Stack:**
+- Next.js 16 with App Router
+- TypeScript
+- Tailwind CSS v4 (styling)
+- Server-side rendering (SSR)
+- Comprehensive SEO metadata (Open Graph, Twitter Cards)
+- Playwright (E2E testing)
+
+**Commands:**
+```bash
+npx nx serve lumos-client          # Start dev server
+npx nx build lumos-client          # Build for production
+npx nx test lumos-client           # Run tests (E2E with Playwright)
+```
+
+**Port:** Development server runs on http://localhost:3000
+
+**Features:**
+- SEO-optimized metadata with title templates
+- Open Graph and Twitter Card support
+- Robots.txt configuration
+- Server-side rendering for better performance and SEO
+- Shared design tokens from ui-components
+
 ### lumos-editor
-React application for the frontend interface.
+React application for the design editor interface.
 
 **Tech Stack:**
 - React 19 with TypeScript
@@ -235,14 +264,16 @@ npx nx sync:check
 ### Quick Start All Services
 
 ```bash
-# Terminal 1: Start UI
-npx nx serve lumos-editor
+# Terminal 1: Start Marketing Site OR API (same port - choose one)
+npx nx serve lumos-client    # Next.js marketing site (port 3000)
+# OR
+npx nx serve lumos-api       # API backend (port 3000)
 
-# Terminal 2: Start Agent (after setup)
+# Terminal 2: Start Design Editor
+npx nx serve lumos-editor    # React design editor (port 4200)
+
+# Terminal 3: Start Agent (after setup)
 npx nx serve lumos-agent
-
-# Terminal 3: Start API
-npx nx serve lumos-api
 ```
 
 ### Run Tests
@@ -252,6 +283,7 @@ npx nx serve lumos-api
 npx nx run-many -t test
 
 # Specific project
+npx nx test lumos-client
 npx nx test lumos-editor
 npx nx test lumos-agent
 npx nx test lumos-api
@@ -264,6 +296,7 @@ npx nx test lumos-api
 npx nx run-many -t build
 
 # Build specific
+npx nx build lumos-client
 npx nx build lumos-editor
 npx nx build lumos-agent
 npx nx build lumos-api
@@ -271,13 +304,23 @@ npx nx build lumos-api
 
 ## Tech Stack Overview
 
-### Frontend
+### Frontend (lumos-client - Marketing Site)
+- **Framework:** Next.js 16 (App Router)
+- **Build Tool:** Next.js built-in (Turbopack/Webpack)
+- **Styling:** Tailwind CSS v4
+- **Routing:** Next.js App Router (file-based)
+- **Testing:** Playwright (E2E)
+- **Language:** TypeScript
+- **Rendering:** Server-side rendering (SSR)
+
+### Frontend (lumos-editor - Design Editor)
 - **Framework:** React 19
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS v4
 - **Routing:** React Router v6
 - **Testing:** Jest + React Testing Library
 - **Language:** TypeScript
+- **Canvas:** Fabric.js with Zustand state management
 
 ### Backend (API)
 - **Framework:** NestJS
@@ -304,22 +347,31 @@ npx nx build lumos-api
 It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin
 ```
 - Install: `npm install -D @tailwindcss/postcss --legacy-peer-deps`
-- Update `postcss.config.js` to use `'@tailwindcss/postcss'` instead of `'tailwindcss'`
-- Change `styles.css` from `@tailwind base/components/utilities` to `@import "tailwindcss"`
+- Update `postcss.config.js` (both lumos-client and lumos-editor) to use `'@tailwindcss/postcss'` instead of `'tailwindcss'`
+- Change CSS files from `@tailwind base/components/utilities` to `@import "tailwindcss"`
 
 **Shadcn components not styled:**
-- Ensure `lumos-editor/src/styles.css` imports ui-components styles:
-```css
-@import "tailwindcss";
-@import "../../ui-components/src/styles.css";
-@source "../../ui-components/src";
-```
+- Ensure CSS files import ui-components styles:
+  - `lumos-client/src/app/global.css`:
+  ```css
+  @import "tailwindcss";
+  @import "../../../ui-components/src/styles.css";
+  @source "../../../ui-components/src";
+  ```
+  - `lumos-editor/src/styles.css`:
+  ```css
+  @import "tailwindcss";
+  @import "../../ui-components/src/styles.css";
+  @source "../../ui-components/src";
+  ```
 - Verify `@import` statements come before `@source` directive
-- Check `lumos-editor/src/main.tsx` imports styles: `import './styles.css'`
+- Check entry files import styles:
+  - `lumos-client/src/app/layout.tsx` imports `./global.css` automatically
+  - `lumos-editor/src/main.tsx` imports `'./styles.css'`
 
 **Classes not applying:**
 - Tailwind needs to scan ui-components for classes
-- Use `@source "../../ui-components/src"` in lumos-editor styles
+- Use `@source "../../ui-components/src"` (or `"../../../ui-components/src"` for lumos-client) in CSS files
 - Ensure PostCSS processes CSS imports correctly
 
 ### LiveKit Agent Issues

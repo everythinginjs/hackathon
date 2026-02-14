@@ -1,0 +1,33 @@
+{
+  "name": "@org/lumos-client",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "lumos-client/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-client",
+        "command": "next dev"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-client",
+        "command": "next build"
+      },
+      "dependsOn": ["^build"],
+      "outputs": ["{workspaceRoot}/lumos-client/.next"]
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "lumos-client",
+        "command": "next start"
+      },
+      "dependsOn": ["build"]
+    }
+  }
+}

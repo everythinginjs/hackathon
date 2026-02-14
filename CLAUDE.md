@@ -31,10 +31,10 @@ A hackathon project building a voice AI agent platform with:
 
 ### Start Development Servers
 ```bash
-npx nx serve lumos-client      # Next.js marketing site - http://localhost:4200
+npx nx serve lumos-client      # Next.js marketing site - http://localhost:3000
 npx nx serve lumos-editor      # Design editor - http://localhost:4200
 npx nx serve lumos-agent       # Voice agent (needs .env.local)
-npx nx serve lumos-api         # API backend - http://localhost:3000
+npx nx serve lumos-api         # API backend - http://localhost:3000 (conflicts with lumos-client)
 ```
 
 ### Build & Test
@@ -284,8 +284,8 @@ Unsupported URL Type "workspace:": workspace:*
 
 3. **Start services:**
    ```bash
-   npx nx serve lumos-client      # Terminal 1 (Next.js site)
-   npx nx serve lumos-editor      # Terminal 2 (Design editor)
+   npx nx serve lumos-client      # Terminal 1 (Next.js site - port 3000)
+   npx nx serve lumos-editor      # Terminal 2 (Design editor - port 4200)
    npx nx serve lumos-agent       # Terminal 3 (after setup)
    npx nx serve lumos-api         # Terminal 4
    ```
@@ -319,14 +319,14 @@ npx nx run-many -t build
 
 ## Tech Stack Summary
 
-| Project | Framework | Bundler | Language | Port | Purpose |
-|---------|-----------|---------|----------|------|---------|
-| lumos-client | Next.js 16 (App Router) | Next.js | TypeScript | 4200 | SEO-optimized marketing site |
-| lumos-editor | React 19 | Vite | TypeScript | 4200 | Design editor application |
-| lumos-agent | Node.js | tsx | TypeScript | - | LiveKit voice AI agent |
-| lumos-api | NestJS | Webpack | TypeScript | 3000 | API backend |
-| ui-components | React | Vite | TypeScript | - | Shared component library |
-| canvas | React | Vite | TypeScript | - | Multi-page canvas library |
+| Project | Framework | Bundler | Language | Port | Command | Purpose |
+|---------|-----------|---------|----------|------|---------|---------|
+| lumos-client | Next.js 16 (App Router) | Next.js | TypeScript | 3000 | `nx serve` | SEO-optimized marketing site |
+| lumos-editor | React 19 | Vite | TypeScript | 4200 | `nx serve` | Design editor application |
+| lumos-agent | Node.js | tsx | TypeScript | - | `nx serve` | LiveKit voice AI agent |
+| lumos-api | NestJS | Webpack | TypeScript | 3000 | `nx serve` | API backend |
+| ui-components | React | Vite | TypeScript | - | - | Shared component library |
+| canvas | React | Vite | TypeScript | - | - | Multi-page canvas library |
 
 ## AI Services (lumos-agent)
 
