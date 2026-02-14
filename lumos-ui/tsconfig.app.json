@@ -32,7 +32,7 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../libs/canvas/tsconfig.lib.json"
+      "path": "../ui-components/tsconfig.lib.json"
     }
   ]
 }

@@ -8,13 +8,18 @@ An Nx workspace for building AI voice agent applications with React and NestJS.
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-ui/              # React frontend with Vite + Tailwind CSS
+├── lumos-ui/              # React frontend with Vite + Tailwind CSS v4
 ├── lumos-agent/           # LiveKit voice AI agent (Node.js)
 ├── lumos-api/             # NestJS API service
-├── ui-components/         # Shared React component library
+├── ui-components/         # Shared shadcn/ui component library with design tokens
+├── libs/
+│   └── canvas/            # Fabric.js canvas integration with Zustand store
 ├── docs/                  # Documentation
 │   ├── PROJECT.md         # This file
-│   └── HACKATHON.md       # Hackathon details and rules
+│   ├── HACKATHON.md       # Hackathon details and rules
+│   ├── AGENTS.md          # AI agent configuration guide
+│   └── CLAUDE.md          # Claude-specific instructions
+├── .npmrc                 # NPM configuration (legacy-peer-deps)
 ├── package.json           # Root workspace configuration
 ├── nx.json                # Nx configuration
 └── README.md              # Quick start guide
@@ -92,16 +97,86 @@ npx nx build lumos-api         # Build for production
 npx nx test lumos-api          # Run tests
 ```
 
-**Port:** API server runs on http://localhost:3000
+## Libraries
 
 ### ui-components
-Shared React components library for reusable UI elements.
+Shared shadcn/ui component library with professional design tokens.
 
-**Commands:**
-```bash
-npx nx test ui-components      # Run tests
-npx nx build ui-components     # Build library
+**Tech Stack:**
+- React with TypeScript
+- shadcn/ui components (official CLI-generated)
+- Tailwind CSS v4 with PostCSS
+- Radix UI primitives
+- Professional design tokens (Figma/Linear-inspired)
+
+**Components:**
+- Button (all variants: default, destructive, outline, secondary, ghost, link)
+- Input
+- Textarea
+- Menubar
+- Context Menu
+
+**Design Tokens:**
+- Brand colors: Purple-blue primary (`oklch(0.55 0.22 264)`)
+- Semantic colors: Success, Warning, Destructive, Info
+- Typography scale with tight tracking
+- Border radius tokens (sm to 4xl)
+- Light and dark mode support
+
+**Usage:**
+```tsx
+import { Button, Input } from '@org/ui-components';
+import '@org/ui-components/styles.css';  // Import in lumos-ui/src/main.tsx
+
+<Button variant="default">Click me</Button>
+<Button variant="destructive">Delete</Button>
+<Input placeholder="Enter text..." />
 ```
+
+**Configuration:**
+- `components.json` - shadcn configuration
+- `src/styles.css` - Design tokens and theme
+- `src/design-tokens.md` - Documentation
+- PostCSS config with `@tailwindcss/postcss`
+
+### libs/canvas
+Fabric.js canvas integration with state management.
+
+**Tech Stack:**
+- Fabric.js 7.x (canvas manipulation)
+- Zustand (state management)
+- Immer (immutable updates)
+- React hooks integration
+
+**Features:**
+- Canvas instance management
+- Object selection tracking
+- Zoom controls
+- Pan mode
+- Add/remove/clear objects
+
+**Usage:**
+```tsx
+import { Canvas } from '@org/canvas';
+import { useCanvasStore } from '@org/canvas';
+
+// Use Canvas component
+<Canvas width={800} height={600} backgroundColor="#ffffff" />
+
+// Access store
+const { fabricCanvas, addObject, selectedObjects } = useCanvasStore();
+```
+
+**Store API:**
+- `fabricCanvas` - Fabric.js canvas instance
+- `selectedObjects` - Currently selected objects
+- `zoom` - Current zoom level
+- `setZoom(zoom)` - Set zoom level
+- `addObject(object)` - Add object to canvas
+- `removeObject(object)` - Remove object
+- `clearCanvas()` - Clear all objects
+
+**Port:** API server runs on http://localhost:3000
 
 ## Common Nx Commands
 
@@ -224,10 +299,28 @@ npx nx build lumos-api
 
 ### Tailwind CSS Issues
 
-If you see PostCSS errors about Tailwind:
-- Ensure `@tailwindcss/postcss` is installed
-- Check `lumos-ui/postcss.config.js` uses `'@tailwindcss/postcss'`
-- Verify `lumos-ui/src/styles.css` has `@import "tailwindcss";`
+**PostCSS plugin error:**
+```
+It looks like you're trying to use `tailwindcss` directly as a PostCSS plugin
+```
+- Install: `npm install -D @tailwindcss/postcss --legacy-peer-deps`
+- Update `postcss.config.js` to use `'@tailwindcss/postcss'` instead of `'tailwindcss'`
+- Change `styles.css` from `@tailwind base/components/utilities` to `@import "tailwindcss"`
+
+**Shadcn components not styled:**
+- Ensure `lumos-ui/src/styles.css` imports ui-components styles:
+```css
+@import "tailwindcss";
+@import "../../ui-components/src/styles.css";
+@source "../../ui-components/src";
+```
+- Verify `@import` statements come before `@source` directive
+- Check `lumos-ui/src/main.tsx` imports styles: `import './styles.css'`
+
+**Classes not applying:**
+- Tailwind needs to scan ui-components for classes
+- Use `@source "../../ui-components/src"` in lumos-ui styles
+- Ensure PostCSS processes CSS imports correctly
 
 ### LiveKit Agent Issues
 
@@ -250,12 +343,33 @@ SyntaxError: The requested module does not provide an export
 ```
 - Ensure you're using correct imports: `import { voice } from '@livekit/agents'`
 
+### Shadcn/UI Issues
+
+**Peer dependency conflicts:**
+```
+ERESOLVE could not resolve
+```
+- Root cause: fabric.js requires canvas@3.x but jsdom requires canvas@2.x
+- Solution: Use `--legacy-peer-deps` flag or create `.npmrc`:
+```
+legacy-peer-deps=true
+```
+- Add components: `npx shadcn@latest add button --yes`
+
+**Import path errors in components:**
+- Shadcn generates imports with alias: `@org/ui-components/lib/utils`
+- Must use relative paths inside ui-components: `../../lib/utils`
+- Fix automatically: `sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' src/components/ui/*.tsx`
+
 ### Permission Issues
 
 If npm install fails with EACCES:
 ```bash
 # Fix node_modules permissions
 sudo chown -R $(whoami) node_modules
+
+# Or fix npm cache
+sudo chown -R $(whoami) ~/.npm
 ```
 
 ## Nx Cloud

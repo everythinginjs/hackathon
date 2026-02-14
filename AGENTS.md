@@ -23,19 +23,25 @@ This is a hackathon project called **Lumos** - an AI voice agent platform built 
 - **lumos-ui**: React frontend with Vite + Tailwind CSS v4
 - **lumos-agent**: LiveKit voice AI agent (Node.js with TypeScript)
 - **lumos-api**: NestJS API backend
-- **ui-components**: Shared React component library
+- **ui-components**: shadcn/ui component library with professional design tokens
+- **libs/canvas**: Fabric.js canvas integration with Zustand state management
 
 ## Project Structure
 
 ```
 /Users/amirmahmoudi/Desktop/hackathon/
-├── lumos-ui/              # React app (Vite + Tailwind CSS)
+├── lumos-ui/              # React app (Vite + Tailwind CSS v4)
 ├── lumos-agent/           # LiveKit voice AI agent
 ├── lumos-api/             # NestJS API
-├── ui-components/         # Shared components
+├── ui-components/         # shadcn/ui components + design tokens
+├── libs/
+│   └── canvas/            # Fabric.js canvas + Zustand store
 ├── docs/                  # Documentation
 │   ├── PROJECT.md         # Technical documentation
-│   └── HACKATHON.md       # Hackathon rules
+│   ├── HACKATHON.md       # Hackathon rules
+│   ├── AGENTS.md          # This file
+│   └── CLAUDE.md          # Claude-specific instructions
+├── .npmrc                 # NPM config (legacy-peer-deps=true)
 ├── package.json           # Root workspace
 └── README.md              # Quick start
 ```
@@ -106,6 +112,26 @@ npx nx run-many -t test        # Test all
 - Use `cwd` option in `project.json` for correct command execution
 - Schema path: `../node_modules/nx/schemas/project-schema.json`
 
+### shadcn/ui Components (ui-components)
+- **Official components**: Added via `npx shadcn@latest add <component>`
+- **Design tokens**: Professional Figma/Linear-inspired color palette
+- **Styling**: Tailwind CSS v4 with custom design system
+- **Import paths**: Components use **relative imports** (`../../lib/utils`), not aliases
+- **Setup**: Requires `.npmrc` with `legacy-peer-deps=true` for installation
+- **CSS import**: lumos-ui must import styles: `@import "../../ui-components/src/styles.css"`
+- **Content scanning**: lumos-ui uses `@source "../../ui-components/src"` for Tailwind
+
+**Available Components:**
+- Button (default, destructive, outline, secondary, ghost, link variants)
+- Input, Textarea
+- Menubar, Context Menu
+
+**Key Configuration Files:**
+- `components.json` - shadcn config
+- `src/styles.css` - Design tokens (purple-blue primary, semantic colors)
+- `src/design-tokens.md` - Design system documentation
+- `postcss.config.js` - PostCSS with `@tailwindcss/postcss`
+
 ## Common Issues & Solutions
 
 ### Issue: Tailwind PostCSS Error
@@ -169,6 +195,42 @@ Unsupported URL Type "workspace:": workspace:*
 ```
 **Solution:**
 Replace `workspace:*` with `*` in package.json dependencies (npm workspaces use `*`)
+
+### Issue: shadcn Components Not Styled
+**Symptoms:**
+- Components render but have no styling
+- Tailwind classes don't apply
+
+**Solution:**
+1. Import styles in `lumos-ui/src/main.tsx`: `import './styles.css'`
+2. Update `lumos-ui/src/styles.css`:
+   ```css
+   @import "tailwindcss";
+   @import "../../ui-components/src/styles.css";
+
+   @source "../../ui-components/src";
+   ```
+3. Ensure `@import` comes before `@source` directive
+
+### Issue: shadcn Peer Dependency Conflicts
+```
+ERESOLVE could not resolve - canvas peer dependency conflict
+```
+**Solution:**
+Create `.npmrc` at project root:
+```
+legacy-peer-deps=true
+```
+Then run: `npx shadcn@latest add button --yes`
+
+### Issue: shadcn Import Path Errors
+**Problem:** Generated components use `@org/ui-components/lib/utils`
+
+**Solution:**
+```bash
+cd ui-components/src/components/ui
+sed -i '' 's|@org/ui-components/lib/utils|../../lib/utils|g' *.tsx
+```
 
 ## Development Workflow
 

@@ -1,5 +1,4 @@
 import { useCanvas } from '../hooks/useCanvas';
-
 export interface CanvasProps {
   width?: number;
   height?: number;
@@ -16,11 +15,12 @@ export function Canvas({
   const { canvasRef } = useCanvas({ width, height, backgroundColor });
 
   return (
-    <div className={`flex justify-center items-center w-full h-full overflow-hidden ${className || ''}`}>
-      <canvas
-        ref={canvasRef}
-        className="border border-gray-300 shadow-lg"
-      />
+    <div
+      className={`flex justify-center items-center w-full h-full overflow-hidden ${
+        className || ''
+      }`}
+    >
+      <canvas ref={canvasRef} className="border border-gray-300 shadow-lg" />
     </div>
   );
 }
