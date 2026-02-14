@@ -26,6 +26,21 @@ function setCookie(name: string, value: string, days = 365) {
   document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 }
 
+// Blocking script to prevent FOUC
+export const themeScript = `
+(function() {
+  function getCookie(name) {
+    var value = '; ' + document.cookie;
+    var parts = value.split('; ' + name + '=');
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+
+  var theme = getCookie('theme') || 'dark';
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+})();
+`;
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Initialize from cookie or default to dark
   const [theme, setThemeState] = useState<Theme>(() => {

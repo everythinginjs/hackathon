@@ -47,7 +47,7 @@ export function SearchSection() {
       {/* Headline Section */}
       <div className="text-center space-y-3">
         <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-          <span className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-cyan-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             Designs in seconds
           </span>
         </h1>
@@ -61,14 +61,14 @@ export function SearchSection() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="relative">
           {/* Search Bar Container */}
-          <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl overflow-hidden">
+          <div className="rounded-2xl bg-card/80 backdrop-blur-md border border-border shadow-lg overflow-hidden">
             {/* Input Area */}
             <div className="relative">
               <Textarea
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask anything..."
+                placeholder="Describe your design idea and get AI-generated results in seconds..."
                 className="min-h-[100px] max-h-[300px] resize-none text-base border-0 bg-transparent px-6 py-4 pr-24 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50"
                 disabled={isLoading}
               />
@@ -76,20 +76,15 @@ export function SearchSection() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                size="sm"
+                variant="outline"
+                size="icon"
                 disabled={!searchQuery.trim() || isLoading}
-                className="absolute bottom-4 right-4 gap-2"
+                className="absolute bottom-4 right-4"
               >
                 {isLoading ? (
-                  <>
-                    <div className="w-3 h-3 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    <span>Processing...</span>
-                  </>
+                  <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                 ) : (
-                  <>
-                    <span>Generate</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </>
+                  <ArrowRight className="w-4 h-4" />
                 )}
               </Button>
             </div>
@@ -100,12 +95,12 @@ export function SearchSection() {
       {/* Popular Searches */}
       <div className="flex flex-wrap justify-center gap-2">
         {[
-          'Modern landing page',
-          'Social media post',
-          'Business card',
-          'Instagram story',
-          'Email signature',
-          'Poster design',
+          'Minimalist product mockup',
+          'Vibrant social media carousel',
+          'Professional presentation deck',
+          'Eye-catching event flyer',
+          'Modern brand identity kit',
+          'Sleek app landing page',
         ].map((search) => (
           <Badge
             key={search}
@@ -143,7 +138,9 @@ export function SearchSection() {
           >
             <div className="text-2xl">{feature.icon}</div>
             <h3 className="font-semibold text-sm">{feature.title}</h3>
-            <p className="text-xs text-muted-foreground">{feature.description}</p>
+            <p className="text-xs text-muted-foreground">
+              {feature.description}
+            </p>
           </Card>
         ))}
       </div>

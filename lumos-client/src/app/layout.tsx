@@ -1,6 +1,6 @@
+import { ThemeProvider, themeScript } from '@org/theme-mode';
 import type { Metadata } from 'next';
 import './global.css';
-import { ThemeProvider } from '@org/theme-mode';
 
 export const metadata: Metadata = {
   title: {
@@ -66,6 +66,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
